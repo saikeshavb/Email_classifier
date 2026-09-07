@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "SMS Spam Detector",
+  "version": "1.0.0",
+  "description": "Detect whether a message is spam or ham using a machine learning model.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ]
+}

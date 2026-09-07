@@ -1,20 +1,5 @@
 import streamlit as st
-import pickle
-import re
-from nltk.stem import PorterStemmer
-
-vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
-model = pickle.load(open("model.pkl", "rb"))
-
-stemmer = PorterStemmer()
-
-def preprocess_stem(text):
-    text = text.lower()
-    text = re.sub(r'[^\w\s]', '', text)
-    words = text.split()
-    stemmed_words = [stemmer.stem(word) for word in words]
-    return " ".join(stemmed_words)
-
+from predictor import predict_sms
 
 st.set_page_config(
     page_title="SMS Spam Classifier",
@@ -34,13 +19,9 @@ if st.button("Predict"):
     if message.strip() == "":
         st.warning("Please enter an SMS message.")
     else:
-        processed_message = preprocess_stem(message)
+        prediction = predict_sms(message)
 
-        vectorized_message = vectorizer.transform([processed_message])
-
-        prediction = model.predict(vectorized_message)[0]
-
-        if prediction == 1:
+        if prediction == "spam":
             st.error("🚨 This message is SPAM")
         else:
             st.success("✅ This message is HAM")
